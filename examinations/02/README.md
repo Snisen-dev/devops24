@@ -112,9 +112,13 @@ incompatibilities.
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
 
+It returns the inventory in .json format
+
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
+
+It returns ansible inventory as a treediagram (group hierarchy)
 
 ## QUESTION C
 
@@ -131,6 +135,8 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
+
+It connects to the local ip of the machine
 
 ## BONUS QUESTION
 
