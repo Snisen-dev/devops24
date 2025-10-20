@@ -85,4 +85,4 @@ Consider the output from the tasks above, and what we were actually doing on the
 
 What is a good naming convention for tasks? (What SHOULD we write in the `name:` field`?)
 
-Answer: Since the "name: field" is being written in the ansible output the name scheme easily understandable, short and descriptive. Kind of like git pushes. example "Uninstalling nginx" or "Stopping nginx on boot and stopping nginx service"
+Answer: Since the "name: field" is being written in the ansible output the name scheme easily understandable, short and descriptive. Kind of like git commits. example "Uninstalling nginx" or "Stopping nginx on boot and stopping nginx service"
