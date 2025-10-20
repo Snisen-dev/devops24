@@ -53,12 +53,17 @@ module.
 
 How can we make the web server start with an addition of just one line to the playbook above?
 
+Answer: The yml file only states that nginx should be installed and that it should start opon reboot. So without rebooting the vm nginx will not start. However we can add "state: started" at the end so that it also starts the service now. 
+
+
 # QUESTION B
 
 You make have noted that the `become: true` statement has moved from a specific task to the beginning
 of the playbook, and is on the same indentation level as `tasks:`.
 
 What does this accomplish?
+
+Answer: Depending on where the "become: true" is in the file is saying when the user should have root rights. If it is before the tasks then all tasks is run with root privileges. 
 
 # QUESTION C
 
@@ -72,8 +77,12 @@ log in to the machine and make sure that there are no `nginx` processes running.
 
 Why did we change the order of the tasks in the `04-uninstall-webserver.yml` playbook?
 
+Answer: Because if you uninstall the nginx first ansible can´t find the service. Running the service task first makes sure that nginx is fully stopped and won´t start at boot. 
+
 # BONUS QUESTION
 
 Consider the output from the tasks above, and what we were actually doing on the machine.
 
 What is a good naming convention for tasks? (What SHOULD we write in the `name:` field`?)
+
+Answer: Since the "name: field" is being written in the ansible output the name scheme easily understandable, short and descriptive. Kind of like git pushes. example "Uninstalling nginx" or "Stopping nginx on boot and stopping nginx service"
