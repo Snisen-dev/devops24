@@ -121,9 +121,15 @@ Run the exact same playbook again and study the output. What is the difference?
 
 What does the `ansible.builtin.debug` module actually do?
 
+Answer:
+It is a bultin tool for debuging and troubleshooting. It is read only so you are not able to change things on the host
+
 ## QUESTION B
 
 What is the variable 'ansible_facts' and where does it come from?
+
+Answer:
+ansible_facts is a variable that is automaticly generated on the host. It contains information about the host ex. IP address, OS, Hostname etc. It is beeing generated at the start of each playbook.
 
 ## QUESTION C
 
@@ -134,9 +140,13 @@ How do we now remove the software we installed through the playbook above? Make 
 playbook remove the exact same software we previously installed. Call the created
 playbook `03-uninstall-software.yml`.
 
+Answer: With the help of state:absent instead of state present
+
 ## BONUS QUESTION
 
 What happens when you run `ansible-playbook` with different options?
+
+Answer:!
 
 Explain what each of these options do:
 * --verbose, -vv, -vvv, -vvvv
