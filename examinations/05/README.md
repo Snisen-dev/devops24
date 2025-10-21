@@ -76,58 +76,19 @@ What does the output look like the first time you run this playbook?
 
 Answer:
 ´´´Bash
-➜  ansible ansible-playbook 05-web.yml
-
-PLAY [Configure HTTPS for nginx] ***********************************************************************
-
-TASK [Gathering Facts] *********************************************************************************
-ok: [192.168.121.31]
-
-TASK [Copy HTTPS configuration to nginx] ***************************************************************
-changed: [192.168.121.31]
-
-PLAY RECAP *********************************************************************************************
-192.168.121.31             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-
 ➜  ansible ansible-playbook -v 05-web.yml
 Using /home/snis/ansible/ansible.cfg as config file
 
-PLAY [Configure HTTPS for nginx] ***********************************************************************
+PLAY [Configure HTTPS for nginx] **************************************************************
 
-TASK [Gathering Facts] *********************************************************************************
-ok: [192.168.121.31]
+TASK [Gathering Facts] ************************************************************************
+ok: [192.168.121.51]
 
-TASK [Copy HTTPS configuration to nginx] ***************************************************************
-ok: [192.168.121.31] => {"changed": true, "checksum": "4928f5d40694d15bf3e276596d47b8fc75544d59", "dest": "/etc/nginx/conf.d/https.conf", "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/nginx/conf.d/https.conf", "secontext": "system_u:object_r:httpd_config_t:s0", "size": 465, "state": "file", "uid": 0}
+TASK [Copy HTTPS configuration to nginx] ******************************************************
+changed: [192.168.121.51] => {"changed": true, "checksum": "4928f5d40694d15bf3e276596d47b8fc75544d59", "dest": "/etc/nginx/conf.d/https.conf", "gid": 0, "group": "root", "md5sum": "a3bb0c727d3e156afa3a11d78b406c83", "mode": "0644", "owner": "root", "secontext": "system_u:object_r:httpd_config_t:s0", "size": 465, "src": "/home/vagrant/.ansible/tmp/ansible-tmp-1761055379.9424767-23353-83196909945419/source", "state": "file", "uid": 0}
 
-PLAY RECAP *********************************************************************************************
-192.168.121.31             : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-
-➜  ansible ansible-playbook -v install-cert.yml
-Using /home/snis/ansible/ansible.cfg as config file
-
-PLAY [Set up self-signed certificates for HTTPS] *******************************************************
-
-TASK [Gathering Facts] *********************************************************************************
-ok: [192.168.121.31]
-
-TASK [Ensure the /etc/pki/nginx directory exists] ******************************************************
-ok: [192.168.121.31] => {"changed": true, "gid": 0, "group": "root", "mode": "0755", "owner": "root", "path": "/etc/pki/nginx", "secontext": "unconfined_u:object_r:cert_t:s0", "size": 39, "state": "directory", "uid": 0}
-
-TASK [Ensure we have a /etc/pkig/nginx/private directory] **********************************************
-ok: [192.168.121.31] => {"changed": true, "gid": 0, "group": "root", "mode": "0700", "owner": "root", "path": "/etc/pki/nginx/private", "secontext": "unconfined_u:object_r:cert_t:s0", "size": 24, "state": "directory", "uid": 0}
-
-TASK [Ensure we have necessary software installed] *****************************************************
-ok: [192.168.121.31] => {"changed": true, "msg": "Nothing to do", "rc": 0, "results": []}
-
-TASK [Ensure we have a private key for our certificate] ************************************************
-ok: [192.168.121.31] => {"changed": true, "filename": "/etc/pki/nginx/private/server.key", "fingerprint": {"blake2b": "bb:cd:37:2b:5d:22:dc:48:0b:f2:99:6b:f2:96:d4:b5:b3:3e:60:3d:62:19:5f:91:22:f3:50:9c:b3:9e:97:7a:23:61:3e:56:62:7c:ce:4d:70:d2:75:c4:ca:44:53:50:3d:ad:cc:78:fc:5e:c2:1d:03:36:1a:3e:57:c3:ed:e5", "blake2s": "eb:6c:28:21:00:81:dd:e8:a6:b8:7f:42:e8:86:a7:80:dd:1f:85:f3:b7:c9:f7:33:85:b9:e0:9e:65:e4:9b:4e", "md5": "4b:a5:80:3c:f1:f4:0c:f9:92:57:7c:92:2a:bb:12:18", "sha1": "00:6a:97:7b:c5:b0:cf:6b:d3:b9:f7:1c:6a:72:78:cf:5a:a9:35:d9", "sha224": "7d:52:65:b3:c3:2e:27:16:f9:00:b9:0f:98:e3:ab:a1:0c:e7:00:36:c7:5d:78:83:bd:78:01:f3", "sha256": "f4:21:4c:1d:7c:e9:f8:a2:e7:3a:be:65:1f:7b:63:29:b7:ca:c8:61:2e:25:f9:81:7e:cb:3c:f3:06:2c:b4:90", "sha384": "bf:aa:c4:7e:2b:22:85:cb:c3:50:91:b7:2a:c0:93:57:55:0d:54:40:fc:a0:22:8f:ae:1b:07:3c:fd:db:70:25:08:6c:7e:7c:21:52:ad:a8:25:6b:8a:c2:35:60:16:65", "sha3_224": "28:ae:b3:4a:f5:6c:ed:bf:f6:e6:2a:05:b8:f4:a5:d4:2c:d1:96:5d:a8:c1:85:c7:fc:d9:d0:d7", "sha3_256": "20:0a:00:3f:a0:66:a1:c1:6a:ad:d3:a5:8b:dd:5d:7e:4c:4c:2e:54:b1:cf:d2:91:cf:60:64:10:89:16:b0:7b", "sha3_384": "ec:0b:4c:be:10:aa:00:d7:72:f4:d6:6a:b5:29:dc:e1:32:d5:f8:84:04:ea:f6:ae:4e:78:c4:80:0e:62:28:8f:70:b5:23:64:e6:07:f4:4d:64:e3:bf:65:4d:7e:8c:60", "sha3_512": "d7:10:55:e1:75:85:fb:20:74:9e:e8:f9:69:a5:72:c1:7c:94:7b:93:0d:79:a3:bc:3f:3f:c9:27:46:fe:fc:66:84:78:fc:1d:bf:a3:80:3a:09:c3:51:0e:8f:d0:40:de:7a:9d:c0:9a:9b:79:cd:a4:91:85:38:c3:51:61:ed:53", "sha512": "29:57:55:1c:73:5b:70:12:14:ab:4a:82:6c:78:ed:a2:f1:d2:17:b3:e6:21:9b:53:6a:a5:67:b3:3b:04:84:5d:ac:04:c1:82:08:9b:ea:c0:4c:5f:0d:37:79:76:67:36:af:7b:46:e6:1f:90:3a:05:5c:fd:f2:ee:b9:e7:61:cf", "shake_128": "cc:51:cf:57:24:7c:25:05:ae:ba:85:23:ca:31:bc:b2:f3:42:9d:b3:df:77:76:8e:5a:5a:c1:eb:d8:74:d6:41", "shake_256": "fd:25:01:65:87:9b:48:3f:03:d2:ec:ba:7a:79:61:38:b3:47:c7:39:d0:d9:8a:d7:a1:ee:71:6f:7b:6f:4b:a0"}, "size": 4096, "type": "RSA"}
-
-TASK [Create a self-signed certificate] ****************************************************************
-ok: [192.168.121.31] => {"changed": true, "csr": null, "filename": "/etc/pki/nginx/server.crt", "notAfter": "20351018223911Z", "notBefore": "20251020223911Z", "privatekey": "/etc/pki/nginx/private/server.key", "serial_number": 146032914911275965452871370599420539465875725483}
-
-PLAY RECAP *********************************************************************************************
-192.168.121.31             : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+PLAY RECAP ************************************************************************************
+192.168.121.51             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 What does the output look like the second time you run this playbook?
 
@@ -177,7 +138,11 @@ a self signed certificate.
 What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
 no configuration change?
 
+Answer: If you allways have a task that restarts the service it is a waste of time if the service dont have to be restarted. It may also cause operational disruptions for the service. 
+
 # BONUS QUESTION
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
+
+Answer: "ansible.builtin.systemd" and "ansible.builtin.command".
