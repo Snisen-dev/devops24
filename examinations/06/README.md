@@ -167,6 +167,13 @@ There are several ways to accomplish this, and there is no _best_ way to do this
 
 Is this a good way to handle these types of conditionals? What do you think?
 
+Answer: I would say it is a good way to decrease the amount of unnecessary restarts and if it restarts you get to se what made it restart in this scenario. 
+
+```YML
+TASK [Restart nginx if config changed] ********************************************************
+skipping: [192.168.121.51] => {"changed": false, "false_condition": "example_conf_result.changed or http_conf_result.changed", "skip_reason": "Conditional result was False"}
+```
+
 # BONUS QUESTION
 
 Imagine you had a playbook with hundreds of tasks to be done on several hosts, and each one of these tasks
@@ -177,3 +184,5 @@ would you like the flow to work?
 
 Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
 Ansible, but in general terms.
+
+Answer: From what I know now, I would run all the tasks first, and if tasks that change the config are run, then I would register a value. In the end , if something has been registered, then I would restart the service to keep the service up to date. If possible , I would try to ensure that it is restarted when it has as few users as possible, e.g, midnight, weekend, or holiday, perhaps.
