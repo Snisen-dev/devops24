@@ -20,6 +20,8 @@ called `webappdb` and a database user called `webappuser`.
 
 Make the `webappuser` have the password "secretpassword" to access the database.
 
+note: changed password to "p"
+
 HINT: The `community.mysql` collection modules has many different ways to authenticate
 users to the MariaDB/MySQL instance. Since we've just installed `mariadb` without setting
 any root password, or securing the server in other ways, we can use the UNIX socket
