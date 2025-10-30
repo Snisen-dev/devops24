@@ -16,7 +16,7 @@ Use Ansible facts, modules, and "safe" commands. Here is an example:
     ---
     - name: Security Compliance Checks
       hosts: all
-      tasks:
+      tasks:  
         - name: check for telnet-server
           ansible.builtin.command:
             cmd: rpm -q telnet-server
@@ -44,7 +44,6 @@ For instance:
       tasks:
         - name: Gather the package facts
           ansible.builtin.package_facts:
-
         - name: check for telnet-server
           ansible.builtin.assert:
             fail_msg: telnet-server package is installed

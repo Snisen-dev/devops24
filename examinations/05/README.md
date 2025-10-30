@@ -80,7 +80,7 @@ a number of keys and values that come from the output of the Ansible module.
 What does the output look like the first time you run this playbook?
 
 Answer:
-´´´Bash
+```YML
 ➜  ansible ansible-playbook -v 05-web.yml
 Using /home/snis/ansible/ansible.cfg as config file
 
@@ -93,11 +93,13 @@ TASK [Copy HTTPS configuration to nginx] ***************************************
 changed: [192.168.121.51] => {"changed": true, "checksum": "4928f5d40694d15bf3e276596d47b8fc75544d59", "dest": "/etc/nginx/conf.d/https.conf", "gid": 0, "group": "root", "md5sum": "a3bb0c727d3e156afa3a11d78b406c83", "mode": "0644", "owner": "root", "secontext": "system_u:object_r:httpd_config_t:s0", "size": 465, "src": "/home/vagrant/.ansible/tmp/ansible-tmp-1761055379.9424767-23353-83196909945419/source", "state": "file", "uid": 0}
 
 PLAY RECAP ************************************************************************************
-192.168.121.51             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.121.51             : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
+
+
 What does the output look like the second time you run this playbook?
 
-Answer: It looks the same but the changed: is false instead of true
+Answer: The first time you run the playbook ansible will copy the https configuration to nginx. The next time you run it ansible will se that the https config already is there and will skip the copy and report `change: false`
 
 
 # QUESTION B
@@ -150,4 +152,4 @@ Answer: If you allways have a task that restarts the service it is a waste of ti
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
 
-Answer: "ansible.builtin.systemd" and "ansible.builtin.command".
+Answer: `ansible.builtin.systemd` and `ansible.builtin.command`.

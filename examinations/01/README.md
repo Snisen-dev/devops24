@@ -16,14 +16,16 @@ Look at the contents of the `~/.ssh` directory:
 
 What are the permissions of the `~/.ssh` directory?
 
+Answer:
 ```bash
 drwx------. 2 deploy deploy 72 Oct 16 11:37 /home/deploy/.ssh
 ```
 
-The owner has full access and is the only one with access
+The owner (deploy) has full access and is the only one with access
 
 Why are the permissions set in such a way?
 
+Answer:
 For security reasons. Inorder to keep the keys and config inacessable to other users otherwise the device may be accessed by an unathorized user. 
 
 ## QUESTION B
@@ -37,6 +39,7 @@ It conatins a list of public ssh keys. It authorizes users that wants to access 
 When logged into one of the VMs, how can you connect to the
 other VM without a password?
 
+Answer:
 By putting your public key in the VMs autorized_keys in ~/.ssh
 
 example:
@@ -52,6 +55,7 @@ If you want to connect from webserver to dbserver without password. You can copy
 
 Can you run a command on a remote host via SSH? How?
 
+Answer:
 Yes you can by appending it to the ssh command
 example:
 ```Bash

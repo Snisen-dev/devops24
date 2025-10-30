@@ -122,7 +122,7 @@ Run the exact same playbook again and study the output. What is the difference?
 What does the `ansible.builtin.debug` module actually do?
 
 Answer:
-It is a bultin tool for debuging and troubleshooting. It is read only so you are not able to change things on the host
+It is a built in tool for debuging and troubleshooting. It is read only so you are not able to change things on the host
 
 ## QUESTION B
 
@@ -140,18 +140,23 @@ How do we now remove the software we installed through the playbook above? Make 
 playbook remove the exact same software we previously installed. Call the created
 playbook `03-uninstall-software.yml`.
 
-Answer: With the help of state:absent instead of state present
+Answer: With the help of `state: absent` instead of `state: present`
 
 ## BONUS QUESTION
 
 What happens when you run `ansible-playbook` with different options?
 
-Answer:!
-
 Explain what each of these options do:
 * --verbose, -vv, -vvv, -vvvv
 * --check
 * --syntax-check
+
+Answer: 
+--verbose, -vv, -vvv, -vvvv: Increases the level of output detail. The more "v"s you add, the more detailed the logs become (-vvvv shows connection details and variable info).
+
+--check: Runs the playbook in check mode, which simulates what would happen without making any real changes on the hosts.
+
+--syntax-check: Validates the syntax of the playbook without executing it. Useful for catching YAML or indentation errors.
 
 ## Study Material & Documentation
 

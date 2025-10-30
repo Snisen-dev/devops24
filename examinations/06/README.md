@@ -167,7 +167,7 @@ There are several ways to accomplish this, and there is no _best_ way to do this
 
 Is this a good way to handle these types of conditionals? What do you think?
 
-Answer: I would say it is a good way to decrease the amount of unnecessary restarts and if it restarts you get to se what made it restart in this scenario. 
+Answer: I would say it is a good way to decrease the amount of unnecessary restarts and if it restarts you get to se what made it restart in this scenario and you know that it was necessary.
 
 ```YML
 TASK [Restart nginx if config changed] ********************************************************

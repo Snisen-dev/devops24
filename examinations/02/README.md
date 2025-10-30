@@ -112,13 +112,16 @@ incompatibilities.
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
 
-It returns the inventory in .json format
+Answer:
+It returns the ansible inventory in .json format with the groups, hosts and variables
 
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
 
+Answer:
 It returns ansible inventory as a treediagram (group hierarchy)
+(easier to see but not does not show the variables)
 
 ## QUESTION C
 
@@ -136,7 +139,8 @@ Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
 
-It connects to the local ip of the machine
+Answer:
+It tells ansible to run the tasks directly on the local machine 
 
 ## BONUS QUESTION
 
@@ -159,3 +163,5 @@ In your Ansible working directory where the `ansible.cfg' is, run
 You should get a pager displaying all available configuration values. How does it differ
 from when you run the same command in your usual home directory?
 
+Answer:
+It shows all the current ansible configuration files that ansible is using. When you run ansible-config dump in your working directory ansible will use the the ansible config file that was created else it will use default config file.

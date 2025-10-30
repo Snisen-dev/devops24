@@ -83,3 +83,6 @@ you most often use in Ansible?
 
 What modules/filters are there in Ansible that can safely test for "truthy/falsy" values, and return something
 more stringent?
+
+Answer:
+Python booleans are True/False, and many other values (like 0, "", [], {}, None) are falsy, everything else is truthy. Ansible inherits this but also treats strings like "yes", "no", "on", "off" as truthy/falsy in some contexts — which can be confusing in my opinion. To safely test values, use the bool filter (my_var | bool) or modules like assert to coerce any variable to a strict True/False before evaluating.

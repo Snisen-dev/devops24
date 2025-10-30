@@ -24,7 +24,7 @@ before being changed.
 
 No password is set for the `deploy` user, so begin by setting the password to `hunter12`.
 
-HINT: To construct a password hash (such as one for use in [ansible.builtin.user](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html), you can use the following command:
+HINT: To construct a password hash (such as one for use in [ansible.builtin.user])(https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html), you can use the following command:
 
     $ openssl passwd -6 hunter12
 
