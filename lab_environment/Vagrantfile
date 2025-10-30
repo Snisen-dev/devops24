@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
 
   $script = <<-SHELL
       getent passwd deploy || useradd --comment "deploy" --home-dir /home/deploy --create-home deploy
-      printf "%deploy ALL=(ALL) NOPASSWD: ALL\n" > /etc/sudoers.d/deploy
+      printf "deploy ALL=(ALL) NOPASSWD: ALL\n" > /etc/sudoers.d/deploy
       umask 077
       mkdir --parents /home/deploy/.ssh
       printf "#{public_key}\n" > /home/deploy/.ssh/authorized_keys

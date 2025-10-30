@@ -1,0 +1,48 @@
+- name: Create IT users on webserver
+  hosts: web
+  become: true
+  vars_files:
+    - pass/11-users.yml
+
+  vars:
+    users:
+      - name: alovelace
+        password: "{{ alovelace }}"
+        groups: "wheel,audio,video"
+        comment: "Ada Lovelace"
+      - name: aturing
+        password: "{{ aturing }}"
+        groups: "tape"
+        comment: "Ada Turing"
+      - name: edijkstra
+        password: "{{ edijkstra }}"
+        groups: "tcpdump"
+        comment: "Edsger Dijkstra"
+      - name: ghopper
+        password: "{{ ghopper }}"
+        groups: "wheel,audio"
+        comment: "Grace hopper"
+
+  tasks:
+    - name: Ensure groups exists
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - wheel
+        - tape
+        - tcpdump
+        - audio
+        - video
+
+    - name: Ensure users exist with correct groups and passwords
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        groups: "{{ item.groups }}"
+        append: no
+        create_home: yes
+        shell: /bin/bash
+        state: present
+      loop: "{{ users }}"
+

@@ -1,0 +1,12 @@
+- name: Install all our favorite software
+  hosts: all
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Ensure vim, bash-completion, and qemu-guest-agent are installed
+      ansible.builtin.package:
+        name:
+          - vim
+          - bash-completion
+          - qemu-guest-agent
+        state: present

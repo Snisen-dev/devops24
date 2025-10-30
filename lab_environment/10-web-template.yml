@@ -1,0 +1,50 @@
+---
+- name: Configure HTTPS for nginx
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Ensure nginx is installed
+      ansible.builtin.package:
+        name: nginx
+        state: present
+
+    - name: Create directory for example.internal
+      ansible.builtin.file:
+        path: /var/www/example.internal/html
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+        seuser: system_u
+        serole: object_r
+        setype: httpd_sys_content_t
+        selevel: s0
+
+    - name: Upload index.html for example.internal
+      ansible.builtin.copy:
+        src: files/index.html
+        dest: /var/www/example.internal/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+        seuser: system_u
+        serole: object_r
+        setype: httpd_sys_content_t
+        selevel: s0
+
+    - name: Template nginx configuration for example.internal
+      ansible.builtin.template:
+        src: templates/example.internal.conf.j2
+        dest: /etc/nginx/conf.d/example.internal.conf
+        owner: root
+        group: root
+        mode: '0644'
+      register: example_conf_result
+      notify: Restart nginx
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

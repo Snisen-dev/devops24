@@ -1,0 +1,94 @@
+---
+- name: Examination 15 - Install and configure Node Exporter
+  hosts: all
+  become: true
+
+  tasks:
+
+    - name: Ensure required packages are installed
+      ansible.builtin.package:
+        name: curl
+        state: present
+
+    - name: Create node_exporter user
+      ansible.builtin.user:
+        name: node_exporter
+        shell: /usr/sbin/nologin
+        system: yes
+        create_home: no
+
+    - name: Download node_exporter archive
+      ansible.builtin.get_url:
+        url: https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+        dest: /tmp/node_exporter.tar.gz
+        mode: '0644'
+
+    - name: Extract node_exporter binary
+      ansible.builtin.unarchive:
+        src: /tmp/node_exporter.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Move node_exporter binary to /usr/local/bin
+      ansible.builtin.copy:
+        src: /tmp/node_exporter-1.8.2.linux-amd64/node_exporter
+        dest: /usr/local/bin/node_exporter
+        owner: node_exporter
+        group: node_exporter
+        mode: '0755'
+        remote_src: yes
+
+    - name: Create systemd service file for node_exporter
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/node_exporter.service
+        content: |
+          [Unit]
+          Description=Prometheus Node Exporter
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          User=node_exporter
+          Group=node_exporter
+          Type=simple
+          ExecStart=/usr/local/bin/node_exporter
+
+          [Install]
+          WantedBy=multi-user.target
+      notify: Restart node_exporter
+
+    - name: Install firewalld and python3-firewall
+      ansible.builtin.yum:
+        name:
+          - firewalld
+          - python3-firewall
+        state: present
+
+    - name: Ensure firewalld is running and enabled
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Open port 9100 in firewall
+      ansible.builtin.firewalld:
+        port: 9100/tcp
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable and start node_exporter service
+      ansible.builtin.systemd:
+        name: node_exporter
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: Restart node_exporter
+      ansible.builtin.systemd:
+        name: node_exporter
+        state: restarted

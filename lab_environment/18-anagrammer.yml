@@ -1,0 +1,27 @@
+---
+- name: Ensure custom Ansible module is available
+  hosts: localhost
+  vars:
+    message: "default message"
+  tasks:
+
+    - name: Create the user Ansible module directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.ansible/plugins/modules"
+        state: directory
+        mode: '0755'
+
+    - name: Copy anagrammer module to the user module directory
+      ansible.builtin.copy:
+        src: library/anagrammer.py
+        dest: "{{ ansible_env.HOME }}/.ansible/plugins/modules/anagrammer.py"
+        mode: '0755'
+
+    - name: Test anagrammer
+      anagrammer:
+        message: "{{ message }}"
+      register: result
+
+    - name: Show results
+      debug:
+        var: result

@@ -1,0 +1,28 @@
+---
+- name: Configure HTTPS for nginx
+  hosts: web
+  become: true
+  tasks:
+    - name: Ensure nginx configuration directory exists
+      ansible.builtin.file:
+        path: /etc/nginx/conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Use prebuilt HTTPS configuration for nginx
+      ansible.builtin.copy:
+        src: files/https.conf
+        dest: /etc/nginx/conf.d/https.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart nginx
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+

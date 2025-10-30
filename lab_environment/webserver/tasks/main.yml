@@ -1,0 +1,4 @@
+---
+    - import_tasks: install-cert.yml
+    - import_tasks: 05-web.yml
+    - import_tasks: 10-web-template.yml

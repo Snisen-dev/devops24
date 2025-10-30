@@ -1,0 +1,19 @@
+---
+users:
+  - name: alovelace
+    password: "{{ alovelace }}"
+    groups: "wheel,audio,video"
+    comment: "Ada Lovelace"
+  - name: aturing
+    password: "{{ aturing }}"
+    groups: "tape"
+    comment: "Alan Turing"
+  - name: edijkstra
+    password: "{{ edijkstra }}"
+    groups: "tcpdump"
+    comment: "Edsger Dijkstra"
+  - name: ghopper
+    password: "{{ ghopper }}"
+    groups: "wheel,audio"
+    comment: "Grace Hopper"
+

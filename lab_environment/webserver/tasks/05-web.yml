@@ -1,0 +1,29 @@
+---
+- name: Ensure nginx is installed
+  ansible.builtin.package:
+    name: nginx
+    state: latest
+
+- name: Ensure nginx is started at boot
+  ansible.builtin.service:
+      name: nginx
+      enabled: true
+
+- name: Ensure nginx configuration directory exists
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Use prebuilt HTTPS configuration for nginx
+  ansible.builtin.copy:
+    src: files/https.conf
+    dest: /etc/nginx/conf.d/https.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload nginx
+
+

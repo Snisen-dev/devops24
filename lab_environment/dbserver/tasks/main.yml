@@ -1,0 +1,37 @@
+---
+
+- name: Ensure MariaDB and Python installed
+  ansible.builtin.package:
+    name:
+      - mariadb-server
+      - python3-PyMySQL
+    state: present
+
+- name: Ensure MariaDB service is active and enabled
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Create database webappdb
+  community.mysql.mysql_db:
+    name: webappdb
+    state: present
+    login_unix_socket: /var/lib/mysql/mysql.sock
+
+- name: Create user with privileges
+  community.mysql.mysql_user:
+    name: webappuser
+    password: "{{ db_pass }}"
+    priv: 'webappdb.*:ALL'
+    state: present
+    login_unix_socket: /var/lib/mysql/mysql.sock
+
+- name: Copy all markdown files to deploy’s home
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /home/deploy/
+    owner: deploy
+    group: deploy
+    mode: '0644'
+  with_fileglob: "files/*.md"

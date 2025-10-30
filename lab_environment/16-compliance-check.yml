@@ -1,0 +1,109 @@
+---
+- name: Security Compliance Checks
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Check for telnet-server package
+      ansible.builtin.assert:
+        that:
+          - "'telnet-server' not in ansible_facts.packages"
+        fail_msg: "telnet-server package is installed"
+        success_msg: "telnet-server package is NOT installed"
+
+    - name: Check for rsh-server package
+      ansible.builtin.assert:
+        that:
+          - "'rsh-server' not in ansible_facts.packages"
+        fail_msg: "rsh-server package is installed"
+        success_msg: "rsh-server package is NOT installed"
+
+    - name: Check for talk-server package
+      ansible.builtin.assert:
+        that:
+          - "'talk-server' not in ansible_facts.packages"
+        fail_msg: "talk-server package is installed"
+        success_msg: "talk-server package is NOT installed"
+
+    - name: Check for vsftpd package
+      ansible.builtin.assert:
+        that:
+          - "'vsftpd' not in ansible_facts.packages"
+        fail_msg: "vsftpd (FTP server) is installed"
+        success_msg: "vsftpd is NOT installed"
+
+    - name: Verify firewalld is installed
+      ansible.builtin.assert:
+        that:
+          - "'firewalld' in ansible_facts.packages"
+        fail_msg: "firewalld is NOT installed"
+        success_msg: "firewalld is installed"
+
+    - name: Verify firewalld is running
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['firewalld.service'].state == 'running'
+        fail_msg: "firewalld is not running"
+        success_msg: "firewalld is running"
+
+    - name: Check SELinux status
+      ansible.builtin.command: getenforce
+      register: selinux_status
+      changed_when: false
+
+    - name: Assert SELinux enforcing or permissive
+      ansible.builtin.assert:
+        that:
+          - selinux_status.stdout in ['Enforcing', 'Permissive']
+        fail_msg: "SELinux is disabled"
+        success_msg: "SELinux is enabled"
+
+    - name: Check that SSH server is installed
+      ansible.builtin.assert:
+        that: "'openssh-server' in ansible_facts.packages"
+        success_msg: "SSH server is installed"
+        fail_msg: "SSH server is NOT installed"
+
+    - name: Check /etc/passwd file permissions
+      ansible.builtin.stat:
+        path: /etc/passwd
+      register: passwd_stat
+
+    - name: Assert /etc/passwd permissions are 0644
+      ansible.builtin.assert:
+        that:
+          - passwd_stat.stat.mode == "0644"
+        fail_msg: "/etc/passwd permissions are incorrect"
+        success_msg: "/etc/passwd permissions are correct (0644)"
+
+    - name: Check /etc/shadow file ownership
+      ansible.builtin.stat:
+        path: /etc/shadow
+      register: shadow_stat
+
+    - name: Assert /etc/shadow is owned by root
+      ansible.builtin.assert:
+        that:
+          - shadow_stat.stat.pw_name == "root"
+          - shadow_stat.stat.gr_name == "root"
+        fail_msg: "/etc/shadow not owned by root"
+        success_msg: "/etc/shadow is owned by root"
+
+    - name: Check root account password
+      ansible.builtin.command:
+        cmd: "grep '^root:' /etc/shadow"
+      register: root_shadow
+      changed_when: false
+
+    - name: Assert root account has a password
+      ansible.builtin.assert:
+        that:
+          - "'!!' not in root_shadow.stdout and '*LOCK*' not in root_shadow.stdout"
+        fail_msg: "Root account has no password"
+        success_msg: "Root account has a password"
+

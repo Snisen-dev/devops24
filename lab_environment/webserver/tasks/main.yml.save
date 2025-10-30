@@ -1,0 +1,67 @@
+- name: Use prebuilt HTTPS configuration to nginx
+  ansible.builtin.copy:
+    src: files/https.conf
+    dest: /etc/nginx/conf.d/https.conf
+    owner: root
+    group: root
+    mode: '0644'
+  register: http_conf_result
+
+- name: Create directory for example.internal
+  ansible.builtin.file:
+    path: /var/www/example.internal/html
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+    seuser: system_u
+    serole: object_r
+    setype: httpd_sys_content_t
+    selevel: s0
+
+- name: Upload index.html for example.internal
+  ansible.builtin.copy:
+    src: files/index.html
+    dest: /var/www/example.internal/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+    seuser: system_u
+    serole: object_r
+    setype: httpd_sys_content_t
+    selevel: s0
+
+- name: Ensure nginx configuration is updated for example.internal
+  ansible.builtin.copy:
+    src: files/example.internal.conf
+    dest: /etc/nginx/conf.d/example.internal.conf
+  register: example_conf_result
+
+- name: Restart nginx if config changed
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  when: example_conf_result.changed or http_conf_result.changed
+
+- name: Ensure groups exist
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - wheel
+    - tape
+    - tcpdump
+    - audio
+    - video
+
+- name: Ensure users exist with correct groups and passwords
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    groups: "{{ item.groups }}"
+    append: yes
+    create_home: yes
+    shell: /bin/bash
+    comment: "{{ item.comment }}"
+    state: present
+  loop: "{{ users }}"
